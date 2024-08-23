@@ -4,8 +4,7 @@ import { Student } from 'src/app/models/student';
 
 @Component({
   selector: 'app-student-delete',
-  templateUrl: './student-delete.component.html',
-  styleUrls: ['./student-delete.component.scss']
+  template: '<p>Student Delete Works!</p>',
 })
 export class StudentDeleteComponent implements OnInit {
   deletingStudent!: Student;

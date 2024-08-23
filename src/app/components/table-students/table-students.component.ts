@@ -45,7 +45,10 @@ export class TableStudentsComponent implements OnInit {
     dialogAddingNewStudent.afterClosed().subscribe((result: Student) => {
       if (result != null) {
         this.baseService.addNewStudent(result).subscribe(() => {
-          this.loadStudents();
+          this.baseService.getAllStudents().subscribe((students) => {
+            this.updateStudentsIds();
+            this.dataSource.data = students;
+          });
         });
       }
     });
@@ -56,12 +59,19 @@ export class TableStudentsComponent implements OnInit {
       width: '400px',
       data: student
     });
+
     dialogDeletingStudent.afterClosed().subscribe((result: boolean) => {
-      if (result == true && student.id != null) {
-        this.baseService.deleteStudentById(student.id).subscribe(() => this.loadStudents());
+      if (result === true && student.id != null) {
+        this.baseService.deleteStudentById(student.id).subscribe(() => {
+          this.baseService.getAllStudents().subscribe((students) => {
+            this.dataSource.data = students;
+            this.updateStudentsIds();
+          });
+        });
       }
     });
   }
+
 
   editStudent(student: Student) {
     const dialogEditingStudent = this.dialog.open(DialogEditStudentComponent, {
@@ -82,4 +92,16 @@ export class TableStudentsComponent implements OnInit {
     })
   }
 
+  updateStudentsIds() {
+    this.dataSource.data.forEach((student, index) => {
+      student.id = index + 1;
+    });
+
+    this.dataSource.data.forEach(student => {
+      this.baseService.updateStudent(student).subscribe();
+    });
+  }
+
 }
+
+

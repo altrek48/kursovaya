@@ -31,7 +31,7 @@ import { DialogCheckStudentWrapperComponent } from './components/student-editor/
     TableStudentsComponent,
     DialogEditWrapperComponent,
     DialogDeleteWrapperComponent,
-    StudentDeleteComponent,
+    // StudentDeleteComponent,
     DialogEditStudentComponent,
     DialogCheckStudentWrapperComponent
 

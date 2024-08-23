@@ -7,9 +7,9 @@ import { InMemoryDbService } from 'angular-in-memory-web-api';
 export class InMemoryDataService implements InMemoryDbService {
   createDb() {
     const students = [
-      {id: 0, name: 'Иван', surname: 'Иванов',debt: 'Физика', group: 'bivt-232', coments: "alalala"},
-      {id: 1, name: 'Денис', surname: 'Денисов',debt: 'Мат. логика', group: 'bivt-231', coments: "ululuul"},
-      {id: 2, name: 'Илья', surname: 'Ильич',debt: 'Физика, Мат. логика', group: 'bivt-233', coments: "liilililli"}
+      {id: 1, name: 'Иван', surname: 'Иванов',debt: 'Физика', group: 'bivt-232', coments: "alalala"},
+      {id: 2, name: 'Денис', surname: 'Денисов',debt: 'Мат. логика', group: 'bivt-231', coments: "ululuul"},
+      {id: 3, name: 'Илья', surname: 'Ильич',debt: 'Физика, Мат. логика', group: 'bivt-233', coments: "liilililli"}
     ];
     return {students};
   }

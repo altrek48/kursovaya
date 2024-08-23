@@ -32,6 +32,7 @@ export class BaseServiceService {
 }
 
   updateStudent(student: Student): Observable<Student> {
+    debugger;
     const url = `${this.studentsUrl}/${student.id}`;
     return this.http.put<Student>(url, student);
 }
