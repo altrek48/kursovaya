@@ -9,6 +9,7 @@ import { DialogEditWrapperComponent } from './../student-editor/dialog-edit-wrap
 import { DialogDeleteWrapperComponent } from './../student-editor/dialog-delete-wrapper/dialog-delete-wrapper/dialog-delete-wrapper.component';
 import { DialogEditStudentComponent } from '../student-editor/dialog-edit-student-wrapper/dialog-edit-student-wrapper.component';
 import { DialogCheckStudentWrapperComponent } from '../student-editor/dialog-check-student-wrapper/dialog-check-student-wrapper.component';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-table-students',
@@ -16,25 +17,37 @@ import { DialogCheckStudentWrapperComponent } from '../student-editor/dialog-che
   styleUrls: ['./table-students.component.scss']
 })
 export class TableStudentsComponent implements OnInit {
+
   displayedColumns: string[] = ['id', 'name', 'surname', 'group', 'functions'];
   dataSource!: MatTableDataSource<Student>;
+  totalElements: number = 0;
+  pageSize: number = 5;
+  pageIndex: number = 0;
+
 
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   constructor(private baseService: BaseServiceService, public dialog: MatDialog, /*private snackBar: MatSnackBar*/) {}
 
   ngOnInit() {
-    this.loadStudents();
+    this.loadStudents(this.pageIndex, this.pageSize);
   }
 
 
 
-  loadStudents() {
-    this.baseService.getAllStudents().subscribe(data => {
-      this.dataSource = new MatTableDataSource(data);
+  loadStudents(pageIndex: number, pageSize: number) {
+    this.baseService.getAllStudents(pageIndex, pageSize).subscribe(data => {
+       this.dataSource = new MatTableDataSource(data.content);
+       this.totalElements = data.totalElements;
+      this.pageSize = data.size;
+      this.pageIndex = data.number;
       this.dataSource.sort = this.sort;
-      this.dataSource.paginator = this.paginator;
+      this.paginator.length = this.totalElements;
     });
+  }
+
+  onPageChange(event: any) {
+    this.loadStudents(event.pageIndex, event.pageSize);
   }
 
   addNewStudent() {
@@ -45,10 +58,7 @@ export class TableStudentsComponent implements OnInit {
     dialogAddingNewStudent.afterClosed().subscribe((result: Student) => {
       if (result != null) {
         this.baseService.addNewStudent(result).subscribe(() => {
-          this.baseService.getAllStudents().subscribe((students) => {
-            this.updateStudentsIds();
-            this.dataSource.data = students;
-          });
+          this.loadStudents(this.pageIndex, this.pageSize);
         });
       }
     });
@@ -59,19 +69,12 @@ export class TableStudentsComponent implements OnInit {
       width: '400px',
       data: student
     });
-
     dialogDeletingStudent.afterClosed().subscribe((result: boolean) => {
-      if (result === true && student.id != null) {
-        this.baseService.deleteStudentById(student.id).subscribe(() => {
-          this.baseService.getAllStudents().subscribe((students) => {
-            this.dataSource.data = students;
-            this.updateStudentsIds();
-          });
-        });
+      if (result == true && student.id != null) {
+        this.baseService.deleteStudentById(student.id).subscribe(() => this.loadStudents(this.pageIndex, this.pageSize));
       }
     });
   }
-
 
   editStudent(student: Student) {
     const dialogEditingStudent = this.dialog.open(DialogEditStudentComponent, {
@@ -80,7 +83,7 @@ export class TableStudentsComponent implements OnInit {
     });
     dialogEditingStudent.afterClosed().subscribe((result: Student) => {
       if (result != null) {
-        this.baseService.updateStudent(result).subscribe(() => this.loadStudents());
+        this.baseService.updateStudent(result).subscribe(() => this.loadStudents(this.pageIndex, this.pageSize));
       }
     });
   }
@@ -92,15 +95,18 @@ export class TableStudentsComponent implements OnInit {
     })
   }
 
-  updateStudentsIds() {
-    this.dataSource.data.forEach((student, index) => {
-      student.id = index + 1;
-    });
-
-    this.dataSource.data.forEach(student => {
-      this.baseService.updateStudent(student).subscribe();
-    });
-  }
+  filterResults(filter: string, pageIndex: number, pageSize: number) {
+    //if(filter != null) {
+      this.baseService.searchByFilter(filter, pageIndex, pageSize).subscribe(data => {
+        this.dataSource = new MatTableDataSource(data.content);
+        this.totalElements = data.totalElements;
+       this.pageSize = data.size;
+       this.pageIndex = data.number;
+       this.dataSource.sort = this.sort;
+       this.paginator.length = this.totalElements;
+     });
+    //}
+    }
 
 }
 

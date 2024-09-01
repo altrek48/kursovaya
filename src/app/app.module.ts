@@ -33,7 +33,7 @@ import { DialogCheckStudentWrapperComponent } from './components/student-editor/
     DialogDeleteWrapperComponent,
     // StudentDeleteComponent,
     DialogEditStudentComponent,
-    DialogCheckStudentWrapperComponent
+    DialogCheckStudentWrapperComponent,
 
   ],
   imports: [
@@ -45,7 +45,7 @@ import { DialogCheckStudentWrapperComponent } from './components/student-editor/
     BrowserAnimationsModule,
     MatFormFieldModule,
     HttpClientModule,
-    HttpClientInMemoryWebApiModule.forRoot( InMemoryDataService, {dataEncapsulation: false}),
+    //HttpClientInMemoryWebApiModule.forRoot( InMemoryDataService, {dataEncapsulation: false}),
     MatButtonModule,
     MatIconModule,
     MatTableModule,

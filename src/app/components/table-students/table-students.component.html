@@ -1,4 +1,16 @@
 <h1>Таблица студентов-должников</h1>
+<input
+  type="text"
+  placeholder="Найти студента"
+  #filter
+/>
+<button
+  class="primary"
+  type="button"
+  (click)="filterResults(filter.value, paginator.pageIndex, paginator.pageSize)"
+>
+  Поиск
+</button>
 <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 full-width-table">
 
   <ng-container matColumnDef="id">
@@ -33,7 +45,13 @@
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>
-  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+  <mat-paginator [length]="totalElements"
+  [pageSize]="pageSize"
+  [pageIndex]="pageIndex"
+  [pageSizeOptions]="[5, 10, 20]"
+  showFirstLastButtons
+  (page)="onPageChange($event)">
+  </mat-paginator>
 <br>
 
 <button mat-raised-button color="primary" (click)="addNewStudent()">Добавить должника</button>
