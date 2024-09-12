@@ -3,7 +3,6 @@ import { Student } from '../models/student';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Page } from '../models/page';
-import { HttpParams } from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
@@ -14,11 +13,13 @@ export class BaseServiceService {
   constructor(
     private http: HttpClient) { }
 
-    getAllStudents(page: number, size: number): Observable<Page<Student>> {
+    getAllStudents(page: number, size: number, sortField: string, sortDirection: string): Observable<Page<Student>> {
       return this.http.get<Page<Student>>('api/base/students', {
         params: {
           page: page.toString(),
-          size: size.toString()
+          size: size.toString(),
+          sortField: sortField,
+          sortDirection: sortDirection
         }
       });
     }
@@ -47,12 +48,14 @@ updateStudent(student: Student): Observable<Student> {
   }
 }
 
-searchByFilter(filter: string, page: number, size: number): Observable<Page<Student>> {
+searchByFilter(filter: string, page: number, size: number, sortField: string, sortDirection: string): Observable<Page<Student>> {
   return this.http.get<Page<Student>>('api/base/students/search', {
     params: {
       filter: filter,
       page: page.toString(),
-      size: size.toString()
+      size: size.toString(),
+      sortField: sortField,
+      sortDirection: sortDirection
     }
   });
 }
