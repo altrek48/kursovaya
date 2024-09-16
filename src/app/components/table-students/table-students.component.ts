@@ -45,21 +45,15 @@ export class TableStudentsComponent implements OnInit {
     }
 
     ngAfterViewInit() {
-      // Подписка на событие сортировки должна быть в ngAfterViewInit, чтобы сортировка была готова
       this.sort.sortChange.subscribe((sort: Sort) => {
-        // Проверяем, есть ли направление сортировки и выбранное поле
         this.sortField = sort.active ? sort.active : this.sortField;
         this.sortDirection = sort.direction ? sort.direction : 'asc';
         console.log(`Sorting by: ${this.sortField}, ${this.sortDirection}`);
-
-        // Перезагружаем данные с новыми параметрами сортировки
         this.loadStudents(this.pageIndex, this.pageSize, this.sortField, this.sortDirection);
       });
       this.paginator.page.subscribe(() => {
         this.loadStudents(this.paginator.pageIndex, this.paginator.pageSize, this.sortField, this.sortDirection);
       });
-
-      // Привязываем сортировку к данным таблицы (помимо подписки на изменения сортировки)
       this.dataSource.sort = this.sort;
     }
 
@@ -73,7 +67,7 @@ export class TableStudentsComponent implements OnInit {
       this.pageSize = data.size;
       this.pageIndex = data.number;
       this.paginator.length = this.totalElements;
-      this.dataSource.sort = this.sort; // Устанавливаем сортировку на клиенте
+      this.dataSource.sort = this.sort;
     });
   }
   }
@@ -147,6 +141,12 @@ export class TableStudentsComponent implements OnInit {
       this.dataSource.sort = this.sort;
     });
   }
+
+  resetFilterValue() {
+    this.currentFilter = '';
+    this.pageIndex = 0;
+  }
+
 }
 
 

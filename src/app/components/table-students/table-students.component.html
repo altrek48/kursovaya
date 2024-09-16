@@ -5,11 +5,17 @@
   #filter
 />
 <button
-  class="primary"
-  type="button"
+  mat-button color="primary"
   (click)="filterResults(filter.value, paginator.pageIndex, paginator.pageSize, sortField, sortDirection)"
 >
   Поиск
+</button>
+<button
+  mat-button color="primary"
+  (click)="resetFilterValue();
+  loadStudents(pageIndex, pageSize, sortField, sortDirection)"
+>
+  Сброс
 </button>
 <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 full-width-table">
 
