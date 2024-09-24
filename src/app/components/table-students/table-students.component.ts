@@ -10,6 +10,7 @@ import { DialogDeleteWrapperComponent } from './../student-editor/dialog-delete-
 import { DialogEditStudentComponent } from '../student-editor/dialog-edit-student-wrapper/dialog-edit-student-wrapper.component';
 import { DialogCheckStudentWrapperComponent } from '../student-editor/dialog-check-student-wrapper/dialog-check-student-wrapper.component';
 import { FilterService } from 'src/app/service/filterService';
+import { User } from 'src/app/models/user';
 
 @Component({
   selector: 'app-table-students',
@@ -146,6 +147,17 @@ export class TableStudentsComponent implements OnInit {
     this.currentFilter = '';
     this.pageIndex = 0;
   }
+
+  login(user: User) {
+    if(user.password && user.username != null) {
+      this.baseService.login(user);
+    }
+  }
+
+  logout(user: User) {
+    this.baseService.logout(user);
+  }
+
 
 }
 

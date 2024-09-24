@@ -22,6 +22,9 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { DialogCheckStudentWrapperComponent } from './components/student-editor/dialog-check-student-wrapper/dialog-check-student-wrapper.component';
+import { UserEditorComponent } from './components/user-editor/user-editor.component';
+import { DialogLoginUserComponent } from './components/user-editor/dialog-login-user/dialog-login-user.component';
+import { DialogRegisterUserComponent } from './components/user-editor/dialog-register-user/dialog-register-user.component';
 
 
 @NgModule({
@@ -34,6 +37,9 @@ import { DialogCheckStudentWrapperComponent } from './components/student-editor/
     // StudentDeleteComponent,
     DialogEditStudentComponent,
     DialogCheckStudentWrapperComponent,
+    UserEditorComponent,
+    DialogLoginUserComponent,
+    DialogRegisterUserComponent,
 
   ],
   imports: [

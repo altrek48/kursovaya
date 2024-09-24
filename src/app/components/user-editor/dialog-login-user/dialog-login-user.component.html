@@ -1,0 +1,19 @@
+<div class="auth-container">
+  <h2>Вход</h2>
+    <div class="form-group">
+      <label for="username">Имя пользователя:</label>
+      <input type="text" id="username" name="username" [(ngModel)]="editingUser.username" required>
+    </div>
+
+    <div class="form-group">
+      <label for="password">Пароль:</label>
+      <input type="password" id="password" name="password" [(ngModel)]="editingUser.password" required>
+    </div>
+
+    <button type="button"(click)="login()">Войти</button>
+
+  <div class="footer-link">
+    <span>Нет аккаунта?</span>
+    <a [routerLink]="['/registration']">Зарегистрироваться</a>
+  </div>
+</div>

@@ -1,8 +1,10 @@
+
 import { Injectable } from '@angular/core';
 import { Student } from '../models/student';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Page } from '../models/page';
+import { User } from '../models/user';
 @Injectable({
   providedIn: 'root'
 })
@@ -10,10 +12,12 @@ export class BaseServiceService {
 
   private studentsUrl = 'api/students';
 
-  constructor(
-    private http: HttpClient) { }
+  constructor(private http: HttpClient) { }
 
     getAllStudents(page: number, size: number, sortField: string, sortDirection: string): Observable<Page<Student>> {
+      // const headers = new HttpHeaders({
+      //   'Authorization': 'Basic ' + btoa(`${user.username}:${password}`)  // Используйте сохраненные username и password
+      // });
       return this.http.get<Page<Student>>('api/base/students', {
         params: {
           page: page.toString(),
@@ -46,6 +50,29 @@ updateStudent(student: Student): Observable<Student> {
   } else {
     throw new Error('Student ID is null');
   }
+}
+
+login(user: User): Observable<User> {
+  const headers = new HttpHeaders({
+    'Authorization': 'Basic ' + btoa(`${user.username}:${user.password}`)
+  });
+  return this.http.post<User>('api/login', {}, {headers});
+}
+
+logout(user: User): Observable<User> {
+  return this.http.post<User>('api/logout', null, {
+    headers: new HttpHeaders({
+      'Authorization': 'Basic ' + btoa(`${user.username}:${user.password}`)
+    }),
+    params: {
+      user: JSON.stringify(user)
+    },
+    responseType: 'json'
+  });
+}
+
+registration(user: User): Observable<User> {
+  return this.http.post<User>('api/registration', user);
 }
 
 searchByFilter(filter: string, page: number, size: number, sortField: string, sortDirection: string): Observable<Page<Student>> {
