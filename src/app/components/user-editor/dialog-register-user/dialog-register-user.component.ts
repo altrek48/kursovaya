@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Route, Router } from '@angular/router';
 import { User } from 'src/app/models/user';
 import { BaseServiceService } from 'src/app/service/base-service.service';
 
@@ -9,7 +10,7 @@ import { BaseServiceService } from 'src/app/service/base-service.service';
 })
 export class DialogRegisterUserComponent implements OnInit {
    user: User;
-  constructor(private baseServiceService: BaseServiceService) {
+  constructor(private baseServiceService: BaseServiceService, private router: Router) {
     this.user = new User();
   }
 
@@ -17,7 +18,16 @@ export class DialogRegisterUserComponent implements OnInit {
   }
 
   registration(user: User) {
-    this.baseServiceService.registration(user);
+    console.log("Registraaaaaation");
+    this.baseServiceService.registration(user).subscribe(
+      (response) => {
+        console.log('Registration successful', response);
+        this.router.navigate(['/login']);
+      },
+      (error) => {
+        console.error('Registration failed', error);
+      }
+    );;
   }
 
 }

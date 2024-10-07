@@ -11,6 +11,8 @@ import { DialogEditStudentComponent } from '../student-editor/dialog-edit-studen
 import { DialogCheckStudentWrapperComponent } from '../student-editor/dialog-check-student-wrapper/dialog-check-student-wrapper.component';
 import { FilterService } from 'src/app/service/filterService';
 import { User } from 'src/app/models/user';
+import { Router } from '@angular/router';
+import { isSuccess } from 'angular-in-memory-web-api';
 
 @Component({
   selector: 'app-table-students',
@@ -27,13 +29,15 @@ export class TableStudentsComponent implements OnInit {
   sortField: string = 'id';
   sortDirection: string = 'asc';
   currentFilter: string = '';
+  succes: boolean = true;
 
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(private baseService: BaseServiceService,
     public dialog: MatDialog,
-    private filterService: FilterService) {}
+    private filterService: FilterService,
+    private router: Router) {}
 
     ngOnInit() {
       const savedFilter = this.filterService.getFilterValue();
@@ -154,8 +158,16 @@ export class TableStudentsComponent implements OnInit {
     }
   }
 
-  logout(user: User) {
-    this.baseService.logout(user);
+  logout() {
+    this.baseService.logout(this.succes).subscribe(
+      (response) => {
+        console.log('Logout successful', response);
+        this.router.navigate(['/login']);
+      },
+      (error) => {
+        console.error('Logout failed', error);
+      }
+    );;
   }
 
 

@@ -15,16 +15,14 @@ export class BaseServiceService {
   constructor(private http: HttpClient) { }
 
     getAllStudents(page: number, size: number, sortField: string, sortDirection: string): Observable<Page<Student>> {
-      // const headers = new HttpHeaders({
-      //   'Authorization': 'Basic ' + btoa(`${user.username}:${password}`)  // Используйте сохраненные username и password
-      // });
       return this.http.get<Page<Student>>('api/base/students', {
         params: {
           page: page.toString(),
           size: size.toString(),
           sortField: sortField,
           sortDirection: sortDirection
-        }
+        },
+        withCredentials: true
       });
     }
 
@@ -56,19 +54,11 @@ login(user: User): Observable<User> {
   const headers = new HttpHeaders({
     'Authorization': 'Basic ' + btoa(`${user.username}:${user.password}`)
   });
-  return this.http.post<User>('api/login', {}, {headers});
+  return this.http.post<User>('api/login', {}, {headers, withCredentials: true});
 }
 
-logout(user: User): Observable<User> {
-  return this.http.post<User>('api/logout', null, {
-    headers: new HttpHeaders({
-      'Authorization': 'Basic ' + btoa(`${user.username}:${user.password}`)
-    }),
-    params: {
-      user: JSON.stringify(user)
-    },
-    responseType: 'json'
-  });
+logout(succes: Boolean): Observable<boolean> {
+  return this.http.post<boolean>('api/logout', succes);
 }
 
 registration(user: User): Observable<User> {

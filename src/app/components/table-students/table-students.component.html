@@ -17,12 +17,13 @@
 >
   Сброс
 </button>
-<!-- <button
-  mat-button color="primary"
-  (click)="logout(current)"
+<button
+  mat-button color="warn"
+  style="float: right;"
+  (click)="logout()"
 >
   Выйти из аккаунта?
-</button> -->
+</button>
 <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 full-width-table">
 
   <ng-container matColumnDef="id">
